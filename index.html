@@ -36,7 +36,7 @@
   .caps { text-transform: uppercase; font-size: var(--small); }
   .u { text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ---------- hover pictures: hands behind everything for iLove, faded polaroid for the name ---------- */
+  /* ---------- hover pictures: hands behind the right panel for iLove, polaroid while the mouse moves on the home page ---------- */
   .shell { position: relative; z-index: 1; }
   .bg {
     position: fixed;
@@ -349,9 +349,14 @@
     showTab(current);
     document.body.classList.remove("show-hands");
   });
-  const who = document.querySelector(".who");
-  who.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-me"));
-  who.addEventListener("mouseleave", () => document.body.classList.remove("show-me"));
+  // ---- home page: the polaroid is up while the mouse is moving, gone once it stops ----
+  let stillTimer;
+  document.addEventListener("mousemove", () => {
+    const onHome = canHover.matches && !current && !$("home").hidden;
+    document.body.classList.toggle("show-me", onHome);
+    clearTimeout(stillTimer);
+    if (onHome) stillTimer = setTimeout(() => document.body.classList.remove("show-me"), 250);
+  });
 
   // ---- live clock, New York time: HH:MM:SSPM ----
   const fmt = new Intl.DateTimeFormat("en-US", {
