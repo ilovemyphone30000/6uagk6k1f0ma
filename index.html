@@ -142,7 +142,8 @@
     /* content starts level with the first heading on the left (measured in JS as --content-top) */
     main { height: 100vh; padding: var(--content-top, calc(var(--pad) + 8px)) var(--pad) calc(var(--pad) + 8px); }
     #top { display: none !important; }
-    .bg { left: var(--side); }
+    /* hands sit in the space below the iLoveMyPhone text, so the grey never runs under the words */
+    .bg { left: var(--side); top: var(--hands-top, 0); }
     .phone-clock { display: none; }
     #home {
       position: fixed;
@@ -372,7 +373,14 @@
   });
   // hands: strictly while the pointer is on the iLoveMyPhone letters themselves, no padding, no fade
   const iloveText = document.querySelector('#tree > li[data-id="ilovemyphone"] .t');
-  iloveText.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-hands"));
+  iloveText.addEventListener("mouseenter", () => {
+    if (!canHover.matches) return;
+    showTab("ilovemyphone");
+    const tab = $("ilovemyphone");
+    const bottom = Math.max(...[...tab.querySelectorAll("*")].map(el => el.getBoundingClientRect().bottom));
+    document.documentElement.style.setProperty("--hands-top", Math.round(bottom + 32) + "px");
+    document.body.classList.add("show-hands");
+  });
   iloveText.addEventListener("mouseleave", () => document.body.classList.remove("show-hands"));
   // ---- polaroid ----
   // name: shows after resting on it briefly (quick on the home page, longer elsewhere; never on
