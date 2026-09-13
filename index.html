@@ -44,7 +44,7 @@
     z-index: 0;
     background: #fff url("img/ilove-hands.jpg") center / contain no-repeat;
     opacity: 0;
-    transition: opacity 0.25s;
+    transition: opacity 1.2s ease-out;
     pointer-events: none;
   }
   .me {
@@ -58,7 +58,7 @@
     pointer-events: none;
   }
   body.show-hands .bg { opacity: 1; }
-  body.show-me .me { opacity: 1; }
+  body.show-me .me { opacity: 1; transition-duration: 0.2s; }
   @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
 
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
@@ -66,6 +66,9 @@
   .side .caps { font-size: clamp(10px, 0.8vw, 12px); }
   .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
   .clock { font-variant-numeric: tabular-nums; }
+  .side .who { order: 0; }
+  .side .mail { order: 1; margin-top: -32px; }
+  .side .tree { order: 2; }
   .tree { list-style: none; display: flex; flex-direction: column; gap: clamp(13px, 1.5vw, 19px); }
   /* only the heading text itself (plus a few px) counts as a hover target */
   .tree > li > a { display: inline-block; padding: 3px 4px; margin: -3px -4px; }
@@ -135,7 +138,6 @@
       padding: calc(var(--pad) + 8px) var(--pad);
       border-right: 1px solid var(--rule);
     }
-    .side .mail { display: none; }
     main { height: 100vh; padding: calc(var(--pad) + 8px) var(--pad); }
     #top { display: none !important; }
     .bg { left: var(--side); }
@@ -149,20 +151,15 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: clamp(13px, 1.05vw, 15px);
-      gap: 6px;
+      font-size: clamp(15px, 1.3vw, 19px);
       pointer-events: none;
     }
-    #home .mail { font-weight: 400; pointer-events: auto; }
   }
 
   /* ---------- phone: first page centred, each heading its own page ---------- */
   @media (max-width: 899px) {
     .side { height: 100dvh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
     .kids, #home { display: none !important; }
-    .side .who { order: 0; }
-    .side .mail { order: 1; margin-top: -32px; }
-    .side .tree { order: 2; }
     body.inside .side { display: none; }
     body:not(.inside) main, body:not(.inside) #top { display: none; }
     .shell > div { display: flex; flex-direction: column; height: 100dvh; }
@@ -209,7 +206,6 @@
       <!-- laptop only: the clock sits alone in the middle of the empty right side -->
       <section class="tab" id="home" hidden>
         <p class="clock">00:00:00AM</p>
-        <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
       </section>
 
       <section class="tab" id="management" hidden>
@@ -371,7 +367,7 @@
     const onHome = canHover.matches && !current && !$("home").hidden;
     me.toggle("show-me", onHome);
     clearTimeout(stillTimer);
-    if (onHome) stillTimer = setTimeout(() => onName || me.remove("show-me"), 250);
+    if (onHome) stillTimer = setTimeout(() => onName || me.remove("show-me"), 700);
   });
 
   // ---- live clock, New York time: HH:MM:SSPM ----
