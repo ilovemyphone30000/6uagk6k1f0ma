@@ -306,23 +306,22 @@
     document.querySelectorAll("#top a").forEach(a =>
       a.getAttribute("href") === "#/" + key ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     document.title = label ? `${label} — Jonah Bierman` : "Jonah Bierman";
+    // the hands stay up for as long as iLoveMyPhone is the page on the right (laptop only)
+    document.body.classList.toggle("show-hands",
+      key === "ilovemyphone" && matchMedia("(min-width: 900px) and (hover: hover)").matches);
     if (matchMedia("(max-width: 899px)").matches) scrollTo(0, 0);
   }
   addEventListener("hashchange", route);
   route();
 
-  // ---- laptop hover: a heading previews its page; iLove brings up the hands; the name brings up the polaroid ----
+  // ---- laptop hover: hovering a heading opens its page, and it stays open until another heading is hovered ----
   const canHover = matchMedia("(min-width: 900px) and (hover: hover)");
   $("tree").addEventListener("mouseover", e => {
     if (!canHover.matches) return;
     const li = e.target.closest("#tree > li");
-    if (!li) return;
-    showTab(li.dataset.id);
-    document.body.classList.toggle("show-hands", li.dataset.id === "ilovemyphone");
-  });
-  $("tree").addEventListener("mouseleave", () => {
-    showTab(current);
-    document.body.classList.remove("show-hands");
+    if (!li || li.dataset.id === current) return;
+    history.replaceState(null, "", "#/" + li.dataset.id);
+    route();
   });
   const who = document.querySelector(".who");
   who.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-me"));
