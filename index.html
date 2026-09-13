@@ -270,17 +270,17 @@
     `<figcaption class="caps">${esc(w.title)}</figcaption></figure></button></li>`).join("");
 
   // tree: each heading, with what sits under it
+  // left column: headings only, no dropdowns
   const TREE = [
-    ["management", "Management", MANAGEMENT.map(n => `<li class="caps">${esc(n)}</li>`)],
-    ["new-virginia", "New Virginia", NEW_VIRGINIA.map(l => `<li class="caps">${out(l)}</li>`)],
-    ["design", "Graphic Design", []],
-    ["ilovemyphone", "iLoveMyPhone", ILOVE.map(l => `<li class="caps">${out(l)}</li>`)],
+    ["management", "Management"],
+    ["new-virginia", "New Virginia"],
+    ["design", "Graphic Design"],
+    ["ilovemyphone", "iLoveMyPhone"],
   ];
-  $("tree").innerHTML = TREE.map(([id, label, kids]) =>
-    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a>` +
-    (kids.length ? `<ul class="kids">${kids.join("")}</ul>` : "") + `</li>`).join("");
+  $("tree").innerHTML = TREE.map(([id, label]) =>
+    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a></li>`).join("");
 
-  // ---- lightbox (from the grid or from a poster name in the tree) ----
+  // ---- lightbox ----
   const lb = $("lb");
   function openPoster(i) {
     const w = WORK[i];
