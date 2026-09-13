@@ -44,7 +44,6 @@
     z-index: 0;
     background: #fff url("img/ilove-hands.jpg") center / contain no-repeat;
     opacity: 0;
-    transition: opacity 1.2s ease-out;
     pointer-events: none;
   }
   .me {
@@ -54,12 +53,12 @@
     top: 16vh;
     width: min(28vw, 380px);
     opacity: 0;
-    transition: opacity 0.25s;
+    transition: opacity 1.2s ease-out;
     pointer-events: none;
   }
   body.show-hands .bg { opacity: 1; }
   body.show-me .me { opacity: 1; transition-duration: 0.2s; }
-  @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .me { transition: none; } }
 
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
   .side { display: flex; flex-direction: column; gap: 40px; font-size: clamp(13px, 1.05vw, 15px); }
@@ -298,7 +297,7 @@
     ["ilovemyphone", "iLoveMyPhone"],
   ];
   $("tree").innerHTML = TREE.map(([id, label]) =>
-    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a></li>`).join("");
+    `<li data-id="${id}"><a href="#/${id}"><span class="t">${esc(label)}</span></a></li>`).join("");
 
   // ---- lightbox ----
   const lb = $("lb");
@@ -350,7 +349,7 @@
   document.fonts && document.fonts.ready.then(alignTop);
 
   // ---- laptop hover: a heading shows its page only while the pointer is on its text ----
-  // (iLoveMyPhone also brings up the hands); moving off goes back to the clicked page
+  // moving off goes back to the clicked page
   const canHover = matchMedia("(min-width: 900px) and (hover: hover)");
   $("tree").addEventListener("mouseover", e => {
     if (!canHover.matches) return;
@@ -358,14 +357,16 @@
     if (!a) return;
     const id = a.parentElement.dataset.id;
     showTab(id);
-    document.body.classList.toggle("show-hands", id === "ilovemyphone");
   });
   $("tree").addEventListener("mouseout", e => {
     const a = e.target.closest("#tree > li > a");
     if (!a || a.contains(e.relatedTarget)) return;
     showTab(current);
-    document.body.classList.remove("show-hands");
   });
+  // hands: strictly while the pointer is on the iLoveMyPhone letters themselves, no padding, no fade
+  const iloveText = document.querySelector('#tree > li[data-id="ilovemyphone"] .t');
+  iloveText.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-hands"));
+  iloveText.addEventListener("mouseleave", () => document.body.classList.remove("show-hands"));
   // ---- polaroid: up while hovering the name (not on Graphic Design or New Virginia),
   //      and on the home page also while the mouse is moving, gone once it stops ----
   const me = document.body.classList;
