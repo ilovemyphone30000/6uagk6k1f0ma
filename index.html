@@ -135,7 +135,7 @@
       padding: calc(var(--pad) + 8px) var(--pad);
       border-right: 1px solid var(--rule);
     }
-    .side .mail { margin-top: auto; }
+    .side .mail { display: none; }
     main { height: 100vh; padding: calc(var(--pad) + 8px) var(--pad); }
     #top { display: none !important; }
     .bg { left: var(--side); }
@@ -150,14 +150,19 @@
       justify-content: center;
       font-weight: 700;
       font-size: clamp(13px, 1.05vw, 15px);
+      gap: 6px;
       pointer-events: none;
     }
+    #home .mail { font-weight: 400; pointer-events: auto; }
   }
 
   /* ---------- phone: first page centred, each heading its own page ---------- */
   @media (max-width: 899px) {
     .side { height: 100dvh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
     .kids, #home { display: none !important; }
+    .side .who { order: 0; }
+    .side .mail { order: 1; margin-top: -32px; }
+    .side .tree { order: 2; }
     body.inside .side { display: none; }
     body:not(.inside) main, body:not(.inside) #top { display: none; }
     .shell > div { display: flex; flex-direction: column; height: 100dvh; }
@@ -204,6 +209,7 @@
       <!-- laptop only: the clock sits alone in the middle of the empty right side -->
       <section class="tab" id="home" hidden>
         <p class="clock">00:00:00AM</p>
+        <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
       </section>
 
       <section class="tab" id="management" hidden>
