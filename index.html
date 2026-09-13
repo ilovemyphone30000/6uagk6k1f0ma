@@ -45,7 +45,7 @@
     z-index: 0;
     background: #fff url("img/ilove-hands.jpg") center / contain no-repeat;
     opacity: 0;
-    transition: opacity 1s ease-out;   /* fades away when it goes */
+    transition: opacity 1.2s ease-out;   /* same as the polaroid: slow fade out */
     pointer-events: none;
   }
   .me {
@@ -58,7 +58,7 @@
     transition: opacity 1.2s ease-out;
     pointer-events: none;
   }
-  body.show-hands .bg { opacity: 1; transition-duration: 0s; }   /* appears at once */
+  body.show-hands .bg { opacity: 1; transition-duration: 0.2s; }   /* same as the polaroid: quick fade in */
   body.show-me .me { opacity: 1; transition-duration: 0.2s; }
   @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
 
