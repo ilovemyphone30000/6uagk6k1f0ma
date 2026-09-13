@@ -20,17 +20,16 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   [hidden] { display: none !important; }
-  html, body { background: var(--paper); color: var(--ink); }
+  html, body { background: var(--paper); color: var(--ink); height: 100%; overflow: hidden; }
   body {
     font-family: "Helvetica Neue", Helvetica, Inter, -apple-system, system-ui, sans-serif;
     font-size: var(--nav);
     line-height: 1.15;
-    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
   ::selection { background: var(--pink); color: var(--ink); }
   a { color: inherit; text-decoration: none; }
-  a:hover, .poster:hover figcaption, .kids button:hover { background: var(--pink); }
+  a:hover, .poster:hover figcaption { background: var(--pink); }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
   .ext::after { content: " ↗"; }
@@ -71,18 +70,9 @@
   /* only the heading text itself (plus a few px) counts as a hover target */
   .tree > li > a { display: inline-block; padding: 3px 4px; margin: -3px -4px; }
   .tree > li > a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
-  .kids {
-    list-style: none;
-    margin: 6px 0 4px 3px;
-    padding-left: 12px;
-    border-left: 1px solid var(--rule);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .tree > li:not(.open) > .kids { display: none; }
 
   /* ---------- content ---------- */
+  main { container-type: size; overflow: hidden; }
   .tab { display: flex; flex-direction: column; gap: 28px; }
   .list { list-style: none; line-height: 1.1; }
   #mgmt { display: flex; flex-direction: column; gap: 2.6em; }
@@ -93,7 +83,7 @@
     grid-template-columns: 1fr 1.125fr;
     grid-template-rows: 1fr 1fr;
     gap: clamp(8px, 1vw, 14px);
-    width: min(900px, 100%);
+    width: min(900px, 100cqw, calc((100cqh - 190px) * 2.125 / 1.5));
     aspect-ratio: 2.125 / 1.5;
   }
   .nv-photos img { display: block; width: 100%; height: 100%; object-fit: cover; background: #111; }
@@ -101,14 +91,17 @@
   .bio { display: flex; flex-direction: column; gap: 1em; max-width: 42ch; line-height: 1.35; }
   .work {
     display: grid;
+    --g: clamp(10px, 1.4vw, 20px);
+    --cap: 28px;
     grid-template-columns: repeat(4, 1fr);
-    gap: clamp(14px, 2vw, 28px);
-    width: min(980px, 100%);
+    gap: var(--g);
+    /* 4 across, 2 rows: poster width is whatever lets two rows of 4:5 posters + captions fit the height */
+    width: min(100cqw, calc(4 * (100cqh - var(--g) - 2 * var(--cap)) / 2.5 + 3 * var(--g)));
     list-style: none;
   }
   .poster { display: block; width: 100%; }
   .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; margin-bottom: 6px; }
-  .poster figcaption { line-height: 1.15; display: inline; }
+  .poster figcaption { line-height: 1.15; display: -webkit-inline-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
   .press { width: min(420px, 100%); }
   .press blockquote { font-size: var(--nav); line-height: 1.3; margin: 0 0 8px; text-transform: none; }
   .press cite { font-style: normal; }
@@ -132,7 +125,7 @@
     .shell {
       display: grid;
       grid-template-columns: var(--side) 1fr;
-      min-height: 100vh;
+      height: 100vh;
     }
     .side {
       position: sticky;
@@ -143,10 +136,9 @@
       border-right: 1px solid var(--rule);
     }
     .side .mail { margin-top: auto; }
-    main { padding: calc(var(--pad) + 8px) var(--pad) clamp(60px, 8vw, 120px); }
+    main { height: 100vh; padding: calc(var(--pad) + 8px) var(--pad); }
     #top { display: none !important; }
     .bg { left: var(--side); }
-    .work { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
     .phone-clock { display: none; }
     #home {
       position: fixed;
@@ -164,17 +156,23 @@
 
   /* ---------- phone: first page centred, each heading its own page ---------- */
   @media (max-width: 899px) {
-    .side { min-height: 100vh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
+    .side { height: 100dvh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
     .kids, #home { display: none !important; }
     body.inside .side { display: none; }
     body:not(.inside) main, body:not(.inside) #top { display: none; }
-    #top { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: var(--pad) var(--pad) 32px; }
+    .shell > div { display: flex; flex-direction: column; height: 100dvh; }
+    #top { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: var(--pad) var(--pad) 20px; flex: none; }
     #top a:first-child { flex-basis: 100%; font-weight: 700; text-transform: uppercase; }
     #top a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
-    main { padding: 0 var(--pad) 80px; }
+    main { flex: 1; min-height: 0; padding: 0 var(--pad) var(--pad); }
     .tab { align-items: center; text-align: center; }
     .row { justify-content: center; }
-    .work { grid-template-columns: repeat(2, 1fr); text-align: left; }
+    .work {
+      --cap: 34px;
+      grid-template-columns: repeat(3, 1fr);
+      width: min(100cqw, calc(3 * (100cqh - 2 * var(--g) - 3 * var(--cap)) / 3.75 + 2 * var(--g)));
+      text-align: left;
+    }
   }
 </style>
 </head>
