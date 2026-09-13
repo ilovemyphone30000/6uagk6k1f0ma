@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jonah Bierman</title>
-<meta name="description" content="Jonah Bierman — management, music, graphic design, iLoveMyPhone.">
+<meta name="description" content="Jonah Bierman — management, New Virginia, graphic design, iLoveMyPhone.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -85,6 +85,7 @@
   .list { list-style: none; line-height: 1.1; }
   #mgmt { display: flex; flex-direction: column; gap: 2.6em; }
   .row { display: flex; flex-wrap: wrap; gap: 8px 26px; }
+  .bio { display: flex; flex-direction: column; gap: 1em; max-width: 42ch; line-height: 1.35; }
   .work {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -183,7 +184,7 @@
     <header id="top">
       <a href="#/">Jonah Bierman</a>
       <a href="#/management">Management</a>
-      <a href="#/music">Music</a>
+      <a href="#/new-virginia">New Virginia</a>
       <a href="#/design">Graphic Design</a>
       <a href="#/ilovemyphone">iLoveMyPhone</a>
     </header>
@@ -199,8 +200,12 @@
         <ul class="list caps" id="mgmt"></ul>
       </section>
 
-      <section class="tab" id="music" hidden>
-        <ul class="list caps" id="musicList"></ul>
+      <section class="tab" id="new-virginia" hidden>
+        <div class="bio">
+          <p>Band. NYC.</p>
+          <p>Isaac Viorst, Matthew Ashman, Jonah Bierman, Max Mendelsohn</p>
+        </div>
+        <div class="row caps" id="nvLinks"></div>
       </section>
 
       <section class="tab" id="design" hidden>
@@ -232,7 +237,7 @@
   // ---- content: edit here ----
   const MANAGEMENT = ["Azel RM", "Piper Quincey Jackson"];
 
-  const MUSIC = [["New Virginia", "https://www.instagram.com/new__virginia/"]];
+  const NEW_VIRGINIA = [["Instagram", "https://www.instagram.com/new__virginia/"]];
 
   const ILOVE = [
     ["Instagram", "https://www.instagram.com/ilovemyphone2005/"],
@@ -255,7 +260,7 @@
   const out = ([label, href]) => `<a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>`;
 
   $("mgmt").innerHTML = MANAGEMENT.map(n => `<li>${esc(n)}</li>`).join("");
-  $("musicList").innerHTML = MUSIC.map(m => `<li>${out(m)}</li>`).join("");
+  $("nvLinks").innerHTML = NEW_VIRGINIA.map(out).join("");
   $("iloveLinks").innerHTML = ILOVE.map(out).join("");
   $("work").innerHTML = WORK.map((w, i) =>
     `<li><button type="button" class="poster" data-i="${i}"><figure>` +
@@ -265,7 +270,7 @@
   // tree: each heading, with what sits under it
   const TREE = [
     ["management", "Management", MANAGEMENT.map(n => `<li class="caps">${esc(n)}</li>`)],
-    ["music", "Music", MUSIC.map(m => `<li class="caps">${out(m)}</li>`)],
+    ["new-virginia", "New Virginia", NEW_VIRGINIA.map(l => `<li class="caps">${out(l)}</li>`)],
     ["design", "Graphic Design", []],
     ["ilovemyphone", "iLoveMyPhone", ILOVE.map(l => `<li class="caps">${out(l)}</li>`)],
   ];
