@@ -92,6 +92,9 @@
     aspect-ratio: 2.125 / 1.5;
   }
   .nv-photos img { display: block; width: 100%; height: 100%; object-fit: cover; background: #111; }
+  /* the page fills the panel height and the photos sit against the bottom of the screen */
+  #new-virginia { height: 100%; }
+  #new-virginia .nv-photos { margin-top: auto; }
   .nv-photos .tall { grid-row: 1 / 3; }
   .bio { display: flex; flex-direction: column; gap: 1em; line-height: 1.35; }
   .work {
