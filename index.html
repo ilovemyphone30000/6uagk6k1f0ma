@@ -367,20 +367,34 @@
   const iloveText = document.querySelector('#tree > li[data-id="ilovemyphone"] .t');
   iloveText.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-hands"));
   iloveText.addEventListener("mouseleave", () => document.body.classList.remove("show-hands"));
-  // ---- polaroid: up while hovering the name (not on Graphic Design or New Virginia),
-  //      and on the home page also while the mouse is moving, gone once it stops ----
+  // ---- polaroid ----
+  // name: shows after resting on it briefly (quick on the home page, longer elsewhere; never on
+  //       Graphic Design or New Virginia), so skimming past the name doesn't flash it.
+  // home page: shows once the mouse has moved a little over the right side (movement over the
+  //       left column doesn't count), and fades out after it stops.
   const me = document.body.classList;
-  let onName = false, stillTimer;
+  const NAME_DWELL_HOME = 120, NAME_DWELL_PAGE = 350, MOVE_MIN = 40, STILL_MS = 700;
+  let onName = false, nameTimer, stillTimer, travelled = 0, lastX = null, lastY = null, lastT = 0;
   const nameAllowed = () => canHover.matches && !["design", "new-virginia"].includes(current);
   const who = document.querySelector(".who");
-  who.addEventListener("mouseenter", () => { onName = true; if (nameAllowed()) me.add("show-me"); });
-  who.addEventListener("mouseleave", () => { onName = false; me.remove("show-me"); });
-  document.addEventListener("mousemove", () => {
+  who.addEventListener("mouseenter", () => {
+    onName = true;
+    if (!nameAllowed()) return;
+    clearTimeout(nameTimer);
+    nameTimer = setTimeout(() => onName && me.add("show-me"), current ? NAME_DWELL_PAGE : NAME_DWELL_HOME);
+  });
+  who.addEventListener("mouseleave", () => { onName = false; clearTimeout(nameTimer); me.remove("show-me"); });
+  document.addEventListener("mousemove", e => {
     if (onName) return;
-    const onHome = canHover.matches && !current && !$("home").hidden;
-    me.toggle("show-me", onHome);
+    const onHome = canHover.matches && !current && !$("home").hidden && !e.target.closest(".side");
+    const now = performance.now();
+    if (!onHome) { travelled = 0; lastX = null; me.remove("show-me"); return; }
+    if (lastX === null || now - lastT > 150) travelled = 0;   // a pause resets the run
+    else travelled += Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    lastX = e.clientX; lastY = e.clientY; lastT = now;
+    if (travelled >= MOVE_MIN) me.add("show-me");
     clearTimeout(stillTimer);
-    if (onHome) stillTimer = setTimeout(() => onName || me.remove("show-me"), 700);
+    stillTimer = setTimeout(() => { travelled = 0; if (!onName) me.remove("show-me"); }, STILL_MS);
   });
 
   // ---- live clock, New York time: HH:MM:SSPM ----
