@@ -67,7 +67,9 @@
   .side .caps { font-size: clamp(10px, 0.8vw, 12px); }
   .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
   .clock { font-variant-numeric: tabular-nums; }
-  .tree { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tree { list-style: none; display: flex; flex-direction: column; gap: clamp(18px, 2.2vw, 28px); }
+  /* only the heading text itself (plus a few px) counts as a hover target */
+  .tree > li > a { display: inline-block; padding: 3px 4px; margin: -3px -4px; }
   .tree > li > a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
   .kids {
     list-style: none;
@@ -323,7 +325,8 @@
   const canHover = matchMedia("(min-width: 900px) and (hover: hover)");
   $("tree").addEventListener("mouseover", e => {
     if (!canHover.matches) return;
-    const li = e.target.closest("#tree > li");
+    const a = e.target.closest("#tree > li > a");
+    const li = a && a.parentElement;
     if (!li || li.dataset.id === current) return;
     history.replaceState(null, "", "#/" + li.dataset.id);
     route();
