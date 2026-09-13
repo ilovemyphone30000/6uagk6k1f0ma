@@ -334,22 +334,22 @@
   addEventListener("hashchange", route);
   route();
 
-  // ---- laptop hover: hovering a heading opens its page, and it stays open until another heading is hovered ----
+  // ---- laptop hover: a heading shows its page only while the pointer is on its text ----
+  // (iLoveMyPhone also brings up the hands); moving off goes back to the clicked page
   const canHover = matchMedia("(min-width: 900px) and (hover: hover)");
   $("tree").addEventListener("mouseover", e => {
     if (!canHover.matches) return;
     const a = e.target.closest("#tree > li > a");
     if (!a) return;
     const id = a.parentElement.dataset.id;
-    // the hands only show while the pointer is on the iLoveMyPhone text itself
+    showTab(id);
     document.body.classList.toggle("show-hands", id === "ilovemyphone");
-    if (id === current) return;
-    history.replaceState(null, "", "#/" + id);
-    route();
   });
   $("tree").addEventListener("mouseout", e => {
     const a = e.target.closest("#tree > li > a");
-    if (a && !a.contains(e.relatedTarget)) document.body.classList.remove("show-hands");
+    if (!a || a.contains(e.relatedTarget)) return;
+    showTab(current);
+    document.body.classList.remove("show-hands");
   });
   const who = document.querySelector(".who");
   who.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-me"));
