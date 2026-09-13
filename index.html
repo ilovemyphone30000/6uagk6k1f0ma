@@ -12,6 +12,7 @@
     --ink: #000;
     --paper: #fff;
     --pink: #ffd6fb;
+    --rule: #cfcfcf;
     --small: clamp(9px, 0.72vw, 11px);
     --nav: clamp(11px, 0.9vw, 13px);
     --pad: clamp(16px, 2.5vw, 36px);
@@ -24,51 +25,38 @@
     font-size: var(--nav);
     line-height: 1.15;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     -webkit-font-smoothing: antialiased;
   }
   ::selection { background: var(--pink); color: var(--ink); }
   a { color: inherit; text-decoration: none; }
-  a:hover, .poster:hover figcaption { background: var(--pink); }
+  a:hover, .poster:hover figcaption, .kids button:hover { background: var(--pink); }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
-  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: left; }
   .ext::after { content: " ↗"; }
   .caps { text-transform: uppercase; font-size: var(--small); }
   .u { text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ---------- first page: name, clock, page titles, email ---------- */
-  #home {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    padding: var(--pad);
-    text-align: center;
-  }
+  /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
+  .side { display: flex; flex-direction: column; gap: 40px; }
   .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
   .clock { font-variant-numeric: tabular-nums; }
-  .index { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .mail { text-transform: none; }
+  .tree { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tree > li > a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
+  .kids {
+    list-style: none;
+    margin: 6px 0 4px 3px;
+    padding-left: 12px;
+    border-left: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tree > li:not(.open) > .kids { display: none; }
 
-  /* ---------- inner pages: name + titles along the top, R&R's uneven spacing ---------- */
-  header { position: relative; height: clamp(90px, 12vw, 140px); }
-  header a { position: absolute; top: var(--pad); white-space: nowrap; }
-  header a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
-  header a:nth-child(1) { left: 16%; font-weight: 700; text-transform: uppercase; }
-  header a:nth-child(2) { left: 36%; }
-  header a:nth-child(3) { left: 50%; }
-  header a:nth-child(4) { left: 67%; }
-  header a:nth-child(5) { left: 81%; }
-
-  main { flex: 1; padding: 0 var(--pad) clamp(80px, 10vw, 140px); }
-  .tab { display: flex; flex-direction: column; align-items: center; gap: 28px; }
-  .list { list-style: none; text-align: center; line-height: 1.1; }
-  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
-
-  /* graphic design */
+  /* ---------- content ---------- */
+  .tab { display: flex; flex-direction: column; gap: 28px; }
+  .list { list-style: none; line-height: 1.1; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 26px; }
   .work {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -76,12 +64,10 @@
     width: min(980px, 100%);
     list-style: none;
   }
-  .poster { display: block; width: 100%; text-align: left; }
+  .poster { display: block; width: 100%; }
   .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; margin-bottom: 6px; }
   .poster figcaption { line-height: 1.15; display: inline; }
-
-  /* press (not linked anywhere for now) */
-  .press { width: min(420px, 100%); text-align: center; }
+  .press { width: min(420px, 100%); }
   .press blockquote { font-size: var(--nav); line-height: 1.3; margin: 0 0 8px; text-transform: none; }
   .press cite { font-style: normal; }
 
@@ -99,68 +85,93 @@
   dialog::backdrop { background: transparent; }
   dialog img { max-width: 100%; max-height: calc(100vh - 2 * var(--pad) - 30px); object-fit: contain; }
 
-  @media (max-width: 760px) { .work { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) {
-    header { height: auto; padding: var(--pad); display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 32px; }
-    header a { position: static; }
-    header a:nth-child(1) { flex-basis: 100%; }
+  /* ---------- laptop: tree stays on the left, content opens to the right ---------- */
+  @media (min-width: 900px) {
+    .shell {
+      display: grid;
+      grid-template-columns: clamp(220px, 22vw, 300px) 1fr;
+      min-height: 100vh;
+    }
+    .side {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      height: 100vh;
+      padding: calc(var(--pad) + 8px) var(--pad);
+      border-right: 1px solid var(--rule);
+    }
+    .side .mail { margin-top: auto; }
+    main { padding: calc(var(--pad) + 8px) var(--pad) clamp(60px, 8vw, 120px); }
+    #top { display: none !important; }
+    .work { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  }
+
+  /* ---------- phone: first page centred, each heading its own page ---------- */
+  @media (max-width: 899px) {
+    .side { min-height: 100vh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
+    .kids { display: none !important; }
+    body.inside .side { display: none; }
+    body:not(.inside) main, body:not(.inside) #top { display: none; }
+    #top { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: var(--pad) var(--pad) 32px; }
+    #top a:first-child { flex-basis: 100%; font-weight: 700; text-transform: uppercase; }
+    #top a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
+    main { padding: 0 var(--pad) 80px; }
+    .tab { align-items: center; text-align: center; }
+    .row { justify-content: center; }
+    .work { grid-template-columns: repeat(2, 1fr); text-align: left; }
   }
 </style>
 </head>
 <body>
 
-<section id="home">
-  <div class="who">
-    <p>Jonah Bierman</p>
-    <p class="clock" id="clock">00:00:00AM</p>
+<div class="shell">
+  <aside class="side">
+    <a class="who" href="#/">
+      <span>Jonah Bierman</span>
+      <span class="clock" id="clock">00:00:00AM</span>
+    </a>
+    <ul class="tree" id="tree"></ul>
+    <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
+  </aside>
+
+  <div>
+    <header id="top">
+      <a href="#/">Jonah Bierman</a>
+      <a href="#/management">Management</a>
+      <a href="#/music">Music</a>
+      <a href="#/design">Graphic Design</a>
+      <a href="#/ilovemyphone">iLoveMyPhone</a>
+    </header>
+
+    <main>
+      <section class="tab" id="management" hidden>
+        <p class="caps u">Current</p>
+        <ul class="list caps" id="mgmt"></ul>
+      </section>
+
+      <section class="tab" id="music" hidden>
+        <ul class="list caps" id="musicList"></ul>
+      </section>
+
+      <section class="tab" id="design" hidden>
+        <ul class="work" id="work"></ul>
+      </section>
+
+      <section class="tab" id="ilovemyphone" hidden>
+        <div class="row caps" id="iloveLinks"></div>
+      </section>
+
+      <!-- Press is hidden for now: nothing links here. To bring it back, add it to TREE. -->
+      <section class="tab" id="press" hidden>
+        <div class="press caps">
+          <blockquote>“His branding and management are really chic”</blockquote>
+          <cite>— NYU ’26 student, asked whose career they envy.
+            <a class="ext u" href="https://www.readfeedme.com/p/hows-the-job-hunt-going-for-the-class" target="_blank" rel="noopener">Feed Me, Jan 2026</a></cite>
+        </div>
+      </section>
+    </main>
   </div>
-  <ul class="index">
-    <li><a href="#/management">Management</a></li>
-    <li><a href="#/music">Music</a></li>
-    <li><a href="#/design">Graphic Design</a></li>
-    <li><a href="#/ilovemyphone">iLoveMyPhone</a></li>
-  </ul>
-  <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
-</section>
-
-<header id="top" hidden>
-  <a href="#/">Jonah Bierman</a>
-  <a href="#/management">Management</a>
-  <a href="#/music">Music</a>
-  <a href="#/design">Graphic Design</a>
-  <a href="#/ilovemyphone">iLoveMyPhone</a>
-</header>
-
-<main id="pages" hidden>
-  <section class="tab" id="management" hidden>
-    <p class="caps u">Current</p>
-    <ul class="list caps" id="mgmt"></ul>
-  </section>
-
-  <section class="tab" id="music" hidden>
-    <ul class="list caps" id="musicList"></ul>
-  </section>
-
-  <section class="tab" id="design" hidden>
-    <ul class="work" id="work"></ul>
-  </section>
-
-  <section class="tab" id="ilovemyphone" hidden>
-    <div class="row caps">
-      <a class="ext" href="https://www.instagram.com/ilovemyphone2005/" target="_blank" rel="noopener">Instagram</a>
-      <a class="ext" href="https://open.spotify.com/user/31o2dxww5xg6yse2oa6fy5e6ffmy" target="_blank" rel="noopener">Spotify</a>
-    </div>
-  </section>
-
-  <!-- Press is hidden for now: no link points here. To bring it back, add "press" to TABS and a link to #/press. -->
-  <section class="tab" id="press" hidden>
-    <div class="press caps">
-      <blockquote>“His branding and management are really chic”</blockquote>
-      <cite>— NYU ’26 student, asked whose career they envy.
-        <a class="ext u" href="https://www.readfeedme.com/p/hows-the-job-hunt-going-for-the-class" target="_blank" rel="noopener">Feed Me, Jan 2026</a></cite>
-    </div>
-  </section>
-</main>
+</div>
 
 <dialog id="lb" aria-label="Poster">
   <img id="lbImg" alt="">
@@ -172,6 +183,11 @@
   const MANAGEMENT = ["Azel RM", "Piper Quincey Jackson"];
 
   const MUSIC = [["New Virginia", "https://www.instagram.com/new__virginia/"]];
+
+  const ILOVE = [
+    ["Instagram", "https://www.instagram.com/ilovemyphone2005/"],
+    ["Spotify", "https://open.spotify.com/user/31o2dxww5xg6yse2oa6fy5e6ffmy"],
+  ];
 
   const WORK = [
     { src: "work/mavi.jpg", title: "Mavi — NYU Program Board" },
@@ -186,45 +202,58 @@
   // ---- render ----
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const $ = id => document.getElementById(id);
+  const out = ([label, href]) => `<a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>`;
 
   $("mgmt").innerHTML = MANAGEMENT.map(n => `<li>${esc(n)}</li>`).join("");
-  $("musicList").innerHTML = MUSIC.map(([n, href]) =>
-    `<li><a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("");
+  $("musicList").innerHTML = MUSIC.map(m => `<li>${out(m)}</li>`).join("");
+  $("iloveLinks").innerHTML = ILOVE.map(out).join("");
   $("work").innerHTML = WORK.map((w, i) =>
     `<li><button type="button" class="poster" data-i="${i}"><figure>` +
     `<img src="${esc(w.src)}" alt="${esc(w.title)} poster" loading="lazy">` +
     `<figcaption class="caps">${esc(w.title)}</figcaption></figure></button></li>`).join("");
 
-  // ---- lightbox ----
+  // tree: each heading, with what sits under it
+  const TREE = [
+    ["management", "Management", MANAGEMENT.map(n => `<li class="caps">${esc(n)}</li>`)],
+    ["music", "Music", MUSIC.map(m => `<li class="caps">${out(m)}</li>`)],
+    ["design", "Graphic Design", WORK.map((w, i) =>
+      `<li class="caps"><button type="button" data-i="${i}">${esc(w.title.split(" — ")[0])}</button></li>`)],
+    ["ilovemyphone", "iLoveMyPhone", ILOVE.map(l => `<li class="caps">${out(l)}</li>`)],
+  ];
+  $("tree").innerHTML = TREE.map(([id, label, kids]) =>
+    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a><ul class="kids">${kids.join("")}</ul></li>`).join("");
+
+  // ---- lightbox (from the grid or from a poster name in the tree) ----
   const lb = $("lb");
-  $("work").addEventListener("click", e => {
-    const b = e.target.closest(".poster");
-    if (!b) return;
-    const w = WORK[b.dataset.i];
+  function openPoster(i) {
+    const w = WORK[i];
     $("lbImg").src = w.src;
     $("lbImg").alt = w.title + " poster";
     $("lbCap").textContent = w.title;
     lb.showModal();
+  }
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-i]");
+    if (b) openPoster(b.dataset.i);
   });
   lb.addEventListener("click", () => lb.close());
 
-  // ---- tabs ----
-  const TABS = {
-    management: "Management",
-    music: "Music",
-    design: "Graphic Design",
-    ilovemyphone: "iLoveMyPhone",
-  };
+  // ---- routing ----
+  const LABELS = Object.fromEntries(TREE.map(([id, label]) => [id, label]));
   function route() {
     const key = location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
-    const label = TABS[key];
-    $("home").hidden = !!label;
-    $("top").hidden = $("pages").hidden = !label;
+    const label = LABELS[key];
+    document.body.classList.toggle("inside", !!label);
     document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== key));
-    document.querySelectorAll("header a").forEach(a =>
+    document.querySelectorAll("#tree > li").forEach(li => {
+      const on = li.dataset.id === key;
+      li.classList.toggle("open", on);
+      on ? li.firstChild.setAttribute("aria-current", "page") : li.firstChild.removeAttribute("aria-current");
+    });
+    document.querySelectorAll("#top a").forEach(a =>
       a.getAttribute("href") === "#/" + key ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     document.title = label ? `${label} — Jonah Bierman` : "Jonah Bierman";
-    scrollTo(0, 0);
+    if (matchMedia("(max-width: 899px)").matches) scrollTo(0, 0);
   }
   addEventListener("hashchange", route);
   route();
