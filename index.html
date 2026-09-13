@@ -36,8 +36,34 @@
   .caps { text-transform: uppercase; font-size: var(--small); }
   .u { text-decoration: underline; text-underline-offset: 2px; }
 
+  /* ---------- hover pictures: hands behind everything for iLove, faded polaroid for the name ---------- */
+  .shell { position: relative; z-index: 1; }
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #fff url("img/ilove-hands.jpg") center / cover no-repeat;
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+  .me {
+    position: fixed;
+    z-index: 0;
+    left: 58%;
+    top: 16vh;
+    width: min(28vw, 380px);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+  body.show-hands .bg { opacity: 1; }
+  body.show-me .me { opacity: 0.35; }
+  @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
+
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
-  .side { display: flex; flex-direction: column; gap: 40px; }
+  .side { display: flex; flex-direction: column; gap: 40px; font-size: clamp(13px, 1.05vw, 15px); }
+  .side .caps { font-size: clamp(10px, 0.8vw, 12px); }
   .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
   .clock { font-variant-numeric: tabular-nums; }
   .tree { list-style: none; display: flex; flex-direction: column; gap: 6px; }
@@ -123,6 +149,9 @@
 </style>
 </head>
 <body>
+
+<div class="bg" aria-hidden="true"></div>
+<img class="me" src="img/jonah-polaroid.jpg" alt="" aria-hidden="true">
 
 <div class="shell">
   <aside class="side">
@@ -216,12 +245,12 @@
   const TREE = [
     ["management", "Management", MANAGEMENT.map(n => `<li class="caps">${esc(n)}</li>`)],
     ["music", "Music", MUSIC.map(m => `<li class="caps">${out(m)}</li>`)],
-    ["design", "Graphic Design", WORK.map((w, i) =>
-      `<li class="caps"><button type="button" data-i="${i}">${esc(w.title.split(" — ")[0])}</button></li>`)],
+    ["design", "Graphic Design", []],
     ["ilovemyphone", "iLoveMyPhone", ILOVE.map(l => `<li class="caps">${out(l)}</li>`)],
   ];
   $("tree").innerHTML = TREE.map(([id, label, kids]) =>
-    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a><ul class="kids">${kids.join("")}</ul></li>`).join("");
+    `<li data-id="${id}"><a href="#/${id}">${esc(label)}</a>` +
+    (kids.length ? `<ul class="kids">${kids.join("")}</ul>` : "") + `</li>`).join("");
 
   // ---- lightbox (from the grid or from a poster name in the tree) ----
   const lb = $("lb");
@@ -240,11 +269,14 @@
 
   // ---- routing ----
   const LABELS = Object.fromEntries(TREE.map(([id, label]) => [id, label]));
+  let current = "";
+  const showTab = key => document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== key));
   function route() {
     const key = location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
     const label = LABELS[key];
+    current = label ? key : "";
     document.body.classList.toggle("inside", !!label);
-    document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== key));
+    showTab(current);
     document.querySelectorAll("#tree > li").forEach(li => {
       const on = li.dataset.id === key;
       li.classList.toggle("open", on);
@@ -257,6 +289,23 @@
   }
   addEventListener("hashchange", route);
   route();
+
+  // ---- laptop hover: a heading previews its page; iLove brings up the hands; the name brings up the polaroid ----
+  const canHover = matchMedia("(min-width: 900px) and (hover: hover)");
+  $("tree").addEventListener("mouseover", e => {
+    if (!canHover.matches) return;
+    const li = e.target.closest("#tree > li");
+    if (!li) return;
+    showTab(li.dataset.id);
+    document.body.classList.toggle("show-hands", li.dataset.id === "ilovemyphone");
+  });
+  $("tree").addEventListener("mouseleave", () => {
+    showTab(current);
+    document.body.classList.remove("show-hands");
+  });
+  const who = document.querySelector(".who");
+  who.addEventListener("mouseenter", () => canHover.matches && document.body.classList.add("show-me"));
+  who.addEventListener("mouseleave", () => document.body.classList.remove("show-me"));
 
   // ---- live clock, New York time: HH:MM:SSPM ----
   const fmt = new Intl.DateTimeFormat("en-US", {
