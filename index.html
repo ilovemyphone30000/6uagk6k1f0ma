@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jonah Bierman</title>
+<meta name="description" content="Jonah Bierman — management, music, graphic design, iLoveMyPhone. New York.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<style>
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --pink: #ffd6fb;
+    --small: clamp(9px, 0.72vw, 11px);
+    --nav: clamp(11px, 0.9vw, 13px);
+    --pad: clamp(16px, 2.5vw, 36px);
+    --mark: clamp(56px, 8.6vw, 88px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Inter, -apple-system, system-ui, sans-serif;
+    font-size: var(--nav);
+    line-height: 1.15;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--pink); color: var(--ink); }
+  a { color: inherit; text-decoration: none; }
+  a:hover, .poster:hover figcaption, summary:hover { background: var(--pink); }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .ext::after { content: " ↗"; }
+  .caps { text-transform: uppercase; font-size: var(--small); }
+
+  /* ---------- header: the one heavy block, the clock where R&R keeps its nav ---------- */
+  header { position: relative; height: clamp(110px, 16vw, 170px); }
+  .mark {
+    position: absolute;
+    left: 16%;
+    top: var(--pad);
+    width: var(--mark);
+    aspect-ratio: 5 / 6;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 0 6px 3px 0;
+    font-weight: 700;
+    font-size: clamp(18px, 2.6vw, 28px);
+    letter-spacing: -0.06em;
+    line-height: 1;
+  }
+  .clock {
+    position: absolute;
+    top: var(--pad);
+    left: calc(16% + var(--mark) + 6px);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* ---------- one page, sections down a centre line ---------- */
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(72px, 9vw, 120px);
+    padding: clamp(24px, 4vw, 48px) var(--pad) clamp(80px, 10vw, 140px);
+  }
+  section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  [hidden] { display: none !important; }
+  .list { list-style: none; text-align: center; line-height: 1.1; }
+
+  /* graphic design: seven posters in one row, tiny, click to open */
+  .work {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: clamp(10px, 1.4vw, 20px);
+    width: min(1180px, 100%);
+    list-style: none;
+  }
+  .poster { display: block; width: 100%; text-align: left; }
+  .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; }
+  .poster figcaption { margin-top: 6px; line-height: 1.15; display: inline; }
+
+  /* iLoveMyPhone: a link on the main page, its own page behind #/ilovemyphone */
+  h2, .label {
+    font-weight: 400;
+    font-size: var(--small);
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  #ilove { min-height: 50vh; }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
+
+  /* info sheet */
+  .sheet { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 40px; }
+  .sheet .mail { text-transform: none; }
+
+  /* press, folded away at the very bottom */
+  details { width: min(420px, 100%); text-align: center; }
+  summary { list-style: none; cursor: pointer; display: inline; }
+  summary::-webkit-details-marker { display: none; }
+  details blockquote { font-size: var(--nav); line-height: 1.3; margin: 22px 0 8px; }
+  details cite { font-style: normal; }
+  details cite a { text-decoration: underline; text-underline-offset: 2px; }
+
+  /* lightbox */
+  dialog {
+    border: 0;
+    padding: var(--pad);
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.96);
+    display: none;
+  }
+  dialog[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  dialog::backdrop { background: transparent; }
+  dialog img { max-width: 100%; max-height: calc(100vh - 2 * var(--pad) - 30px); object-fit: contain; }
+
+  footer {
+    margin: 0 var(--pad);
+    border-top: 1px solid var(--ink);
+    padding: 14px 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--small);
+  }
+
+  @media (max-width: 1000px) { .work { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px) {
+    header { height: auto; padding: var(--pad); display: flex; align-items: flex-start; gap: 10px; }
+    .mark, .clock { position: static; }
+    .mark { flex: none; }
+    .work { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="mark" href="#" aria-label="Jonah Bierman">jb</a>
+  <p class="clock">JONAH BIERMAN <span id="clock">00:00:00AM</span></p>
+</header>
+
+<main id="home">
+  <section aria-labelledby="h-mgmt">
+    <h2 id="h-mgmt">Management</h2>
+    <ul class="list caps" id="mgmt"></ul>
+  </section>
+
+  <section aria-labelledby="h-music">
+    <h2 id="h-music">Music</h2>
+    <ul class="list caps" id="music"></ul>
+  </section>
+
+  <section aria-labelledby="h-design">
+    <h2 id="h-design">Graphic Design</h2>
+    <ul class="work" id="work"></ul>
+  </section>
+
+  <section>
+    <a class="label" href="#/ilovemyphone">iLoveMyPhone</a>
+  </section>
+
+  <section aria-labelledby="h-info">
+    <h2 id="h-info">Info</h2>
+    <div class="sheet caps">
+      <span>Jonah Bierman</span>
+      <span>New York, NY</span>
+      <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
+    </div>
+  </section>
+
+  <details class="caps">
+    <summary>Press</summary>
+    <blockquote>“His branding and management are really chic”</blockquote>
+    <cite>— NYU ’26 student, asked whose career they envy.
+      <a class="ext" href="https://www.readfeedme.com/p/hows-the-job-hunt-going-for-the-class" target="_blank" rel="noopener">Feed Me, Jan 2026</a></cite>
+  </details>
+</main>
+
+<main id="ilove" hidden>
+  <section aria-labelledby="h-ilove">
+    <h2 id="h-ilove">iLoveMyPhone</h2>
+    <div class="row caps">
+      <a class="ext" href="https://www.instagram.com/ilovemyphone2005/" target="_blank" rel="noopener">Instagram</a>
+      <a class="ext" href="https://open.spotify.com/user/31o2dxww5xg6yse2oa6fy5e6ffmy" target="_blank" rel="noopener">Spotify</a>
+    </div>
+  </section>
+  <a class="caps" href="#/">← Back</a>
+</main>
+
+<footer>
+  <span>© Jonah Bierman</span>
+  <a class="ext" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
+</footer>
+
+<dialog id="lb" aria-label="Poster">
+  <img id="lbImg" alt="">
+  <span class="caps" id="lbCap"></span>
+</dialog>
+
+<script>
+  // ---- content: edit here ----
+  const MANAGEMENT = ["Azel RM", "Piper Quincey Jackson"];
+
+  const MUSIC = [["New Virginia", "https://www.instagram.com/new__virginia/"]];
+
+  const WORK = [
+    { src: "work/mavi.jpg", title: "Mavi — NYU Program Board" },
+    { src: "work/sydney-sherrill-europe.jpg", title: "Sydney Sherrill — Europe Tour" },
+    { src: "work/true-jackson-sxsw.jpg", title: "True Jackson — SXSW" },
+    { src: "work/relics-clay-st.jpg", title: "Relics + Clay St — Nightclub 101" },
+    { src: "work/relics-world-tour.jpg", title: "Relics — World Tour 2026" },
+    { src: "work/new-virginia-house-show.jpg", title: "New Virginia — House Show" },
+    { src: "work/avenues-for-justice.jpg", title: "Avenues for Justice Benefit" },
+  ];
+
+  // ---- render ----
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const $ = id => document.getElementById(id);
+
+  $("mgmt").innerHTML = MANAGEMENT.map(n => `<li>${esc(n)}</li>`).join("");
+  $("music").innerHTML = MUSIC.map(([n, href]) =>
+    `<li><a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("");
+  $("work").innerHTML = WORK.map((w, i) =>
+    `<li><button type="button" class="poster" data-i="${i}"><figure>` +
+    `<img src="${esc(w.src)}" alt="${esc(w.title)} poster" loading="lazy">` +
+    `<figcaption class="caps">${esc(w.title)}</figcaption></figure></button></li>`).join("");
+
+  // ---- lightbox ----
+  const lb = $("lb");
+  $("work").addEventListener("click", e => {
+    const b = e.target.closest(".poster");
+    if (!b) return;
+    const w = WORK[b.dataset.i];
+    $("lbImg").src = w.src;
+    $("lbImg").alt = w.title + " poster";
+    $("lbCap").textContent = w.title;
+    lb.showModal();
+  });
+  lb.addEventListener("click", () => lb.close());
+
+  // ---- two pages: the main page, and iLoveMyPhone at #/ilovemyphone ----
+  function route() {
+    const ilove = location.hash === "#/ilovemyphone";
+    $("home").hidden = ilove;
+    $("ilove").hidden = !ilove;
+    document.title = ilove ? "iLoveMyPhone — Jonah Bierman" : "Jonah Bierman";
+    scrollTo(0, 0);
+  }
+  addEventListener("hashchange", route);
+  route();
+
+  // ---- live clock, New York time: HH:MM:SSPM ----
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
+  });
+  const clock = $("clock");
+  let last = "";
+  (function tick() {
+    const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
+    const s = `${p.hour}:${p.minute}:${p.second}${p.dayPeriod.toUpperCase()}`;
+    if (s !== last) clock.textContent = last = s;
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
