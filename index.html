@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jonah Bierman</title>
-<meta name="description" content="Jonah Bierman — management, music, graphic design, iLoveMyPhone. New York.">
+<meta name="description" content="Jonah Bierman — management, music, graphic design, iLoveMyPhone.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -15,99 +15,75 @@
     --small: clamp(9px, 0.72vw, 11px);
     --nav: clamp(11px, 0.9vw, 13px);
     --pad: clamp(16px, 2.5vw, 36px);
-    --mark: clamp(56px, 8.6vw, 88px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   html, body { background: var(--paper); color: var(--ink); }
   body {
     font-family: "Helvetica Neue", Helvetica, Inter, -apple-system, system-ui, sans-serif;
     font-size: var(--nav);
     line-height: 1.15;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     -webkit-font-smoothing: antialiased;
   }
   ::selection { background: var(--pink); color: var(--ink); }
   a { color: inherit; text-decoration: none; }
-  a:hover, .poster:hover figcaption, summary:hover { background: var(--pink); }
-  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+  a:hover, .poster:hover figcaption { background: var(--pink); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
   .ext::after { content: " ↗"; }
   .caps { text-transform: uppercase; font-size: var(--small); }
+  .u { text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ---------- header: the one heavy block, the clock where R&R keeps its nav ---------- */
-  header { position: relative; height: clamp(110px, 16vw, 170px); }
-  .mark {
-    position: absolute;
-    left: 16%;
-    top: var(--pad);
-    width: var(--mark);
-    aspect-ratio: 5 / 6;
-    background: var(--ink);
-    color: var(--paper);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding: 0 6px 3px 0;
-    font-weight: 700;
-    font-size: clamp(18px, 2.6vw, 28px);
-    letter-spacing: -0.06em;
-    line-height: 1;
-  }
-  .clock {
-    position: absolute;
-    top: var(--pad);
-    left: calc(16% + var(--mark) + 6px);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  /* ---------- one page, sections down a centre line ---------- */
-  main {
+  /* ---------- first page: name, clock, page titles, email ---------- */
+  #home {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(72px, 9vw, 120px);
-    padding: clamp(24px, 4vw, 48px) var(--pad) clamp(80px, 10vw, 140px);
+    justify-content: center;
+    gap: 40px;
+    padding: var(--pad);
+    text-align: center;
   }
-  section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 28px; }
-  [hidden] { display: none !important; }
-  .list { list-style: none; text-align: center; line-height: 1.1; }
+  .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
+  .clock { font-variant-numeric: tabular-nums; }
+  .index { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .mail { text-transform: none; }
 
-  /* graphic design: seven posters in one row, tiny, click to open */
+  /* ---------- inner pages: name + titles along the top, R&R's uneven spacing ---------- */
+  header { position: relative; height: clamp(90px, 12vw, 140px); }
+  header a { position: absolute; top: var(--pad); white-space: nowrap; }
+  header a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
+  header a:nth-child(1) { left: 16%; font-weight: 700; text-transform: uppercase; }
+  header a:nth-child(2) { left: 36%; }
+  header a:nth-child(3) { left: 50%; }
+  header a:nth-child(4) { left: 67%; }
+  header a:nth-child(5) { left: 81%; }
+
+  main { flex: 1; padding: 0 var(--pad) clamp(80px, 10vw, 140px); }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .list { list-style: none; text-align: center; line-height: 1.1; }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
+
+  /* graphic design */
   .work {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: clamp(10px, 1.4vw, 20px);
-    width: min(1180px, 100%);
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(14px, 2vw, 28px);
+    width: min(980px, 100%);
     list-style: none;
   }
   .poster { display: block; width: 100%; text-align: left; }
-  .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; }
-  .poster figcaption { margin-top: 6px; line-height: 1.15; display: inline; }
+  .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; margin-bottom: 6px; }
+  .poster figcaption { line-height: 1.15; display: inline; }
 
-  /* iLoveMyPhone: a link on the main page, its own page behind #/ilovemyphone */
-  h2, .label {
-    font-weight: 400;
-    font-size: var(--small);
-    text-transform: uppercase;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-  #ilove { min-height: 50vh; }
-  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
-
-  /* info sheet */
-  .sheet { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 40px; }
-  .sheet .mail { text-transform: none; }
-
-  /* press, folded away at the very bottom */
-  details { width: min(420px, 100%); text-align: center; }
-  summary { list-style: none; cursor: pointer; display: inline; }
-  summary::-webkit-details-marker { display: none; }
-  details blockquote { font-size: var(--nav); line-height: 1.3; margin: 22px 0 8px; }
-  details cite { font-style: normal; }
-  details cite a { text-decoration: underline; text-underline-offset: 2px; }
+  /* press (not linked anywhere for now) */
+  .press { width: min(420px, 100%); text-align: center; }
+  .press blockquote { font-size: var(--nav); line-height: 1.3; margin: 0 0 8px; text-transform: none; }
+  .press cite { font-style: normal; }
 
   /* lightbox */
   dialog {
@@ -118,89 +94,73 @@
     width: 100vw;
     height: 100vh;
     background: rgba(255, 255, 255, 0.96);
-    display: none;
   }
   dialog[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
   dialog::backdrop { background: transparent; }
   dialog img { max-width: 100%; max-height: calc(100vh - 2 * var(--pad) - 30px); object-fit: contain; }
 
-  footer {
-    margin: 0 var(--pad);
-    border-top: 1px solid var(--ink);
-    padding: 14px 16px 18px;
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--small);
-  }
-
-  @media (max-width: 1000px) { .work { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 760px) { .work { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 640px) {
-    header { height: auto; padding: var(--pad); display: flex; align-items: flex-start; gap: 10px; }
-    .mark, .clock { position: static; }
-    .mark { flex: none; }
-    .work { grid-template-columns: repeat(2, 1fr); }
+    header { height: auto; padding: var(--pad); display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 32px; }
+    header a { position: static; }
+    header a:nth-child(1) { flex-basis: 100%; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <a class="mark" href="#" aria-label="Jonah Bierman">jb</a>
-  <p class="clock">JONAH BIERMAN <span id="clock">00:00:00AM</span></p>
+<section id="home">
+  <div class="who">
+    <p>Jonah Bierman</p>
+    <p class="clock" id="clock">00:00:00AM</p>
+  </div>
+  <ul class="index">
+    <li><a href="#/management">Management</a></li>
+    <li><a href="#/music">Music</a></li>
+    <li><a href="#/design">Graphic Design</a></li>
+    <li><a href="#/ilovemyphone">iLoveMyPhone</a></li>
+  </ul>
+  <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
+</section>
+
+<header id="top" hidden>
+  <a href="#/">Jonah Bierman</a>
+  <a href="#/management">Management</a>
+  <a href="#/music">Music</a>
+  <a href="#/design">Graphic Design</a>
+  <a href="#/ilovemyphone">iLoveMyPhone</a>
 </header>
 
-<main id="home">
-  <section aria-labelledby="h-mgmt">
-    <h2 id="h-mgmt">Management</h2>
+<main id="pages" hidden>
+  <section class="tab" id="management" hidden>
+    <p class="caps u">Current</p>
     <ul class="list caps" id="mgmt"></ul>
   </section>
 
-  <section aria-labelledby="h-music">
-    <h2 id="h-music">Music</h2>
-    <ul class="list caps" id="music"></ul>
+  <section class="tab" id="music" hidden>
+    <ul class="list caps" id="musicList"></ul>
   </section>
 
-  <section aria-labelledby="h-design">
-    <h2 id="h-design">Graphic Design</h2>
+  <section class="tab" id="design" hidden>
     <ul class="work" id="work"></ul>
   </section>
 
-  <section>
-    <a class="label" href="#/ilovemyphone">iLoveMyPhone</a>
-  </section>
-
-  <section aria-labelledby="h-info">
-    <h2 id="h-info">Info</h2>
-    <div class="sheet caps">
-      <span>Jonah Bierman</span>
-      <span>New York, NY</span>
-      <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
-    </div>
-  </section>
-
-  <details class="caps">
-    <summary>Press</summary>
-    <blockquote>“His branding and management are really chic”</blockquote>
-    <cite>— NYU ’26 student, asked whose career they envy.
-      <a class="ext" href="https://www.readfeedme.com/p/hows-the-job-hunt-going-for-the-class" target="_blank" rel="noopener">Feed Me, Jan 2026</a></cite>
-  </details>
-</main>
-
-<main id="ilove" hidden>
-  <section aria-labelledby="h-ilove">
-    <h2 id="h-ilove">iLoveMyPhone</h2>
+  <section class="tab" id="ilovemyphone" hidden>
     <div class="row caps">
       <a class="ext" href="https://www.instagram.com/ilovemyphone2005/" target="_blank" rel="noopener">Instagram</a>
       <a class="ext" href="https://open.spotify.com/user/31o2dxww5xg6yse2oa6fy5e6ffmy" target="_blank" rel="noopener">Spotify</a>
     </div>
   </section>
-  <a class="caps" href="#/">← Back</a>
-</main>
 
-<footer>
-  <span>© Jonah Bierman</span>
-  <a class="ext" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
-</footer>
+  <!-- Press is hidden for now: no link points here. To bring it back, add "press" to TABS and a link to #/press. -->
+  <section class="tab" id="press" hidden>
+    <div class="press caps">
+      <blockquote>“His branding and management are really chic”</blockquote>
+      <cite>— NYU ’26 student, asked whose career they envy.
+        <a class="ext u" href="https://www.readfeedme.com/p/hows-the-job-hunt-going-for-the-class" target="_blank" rel="noopener">Feed Me, Jan 2026</a></cite>
+    </div>
+  </section>
+</main>
 
 <dialog id="lb" aria-label="Poster">
   <img id="lbImg" alt="">
@@ -228,7 +188,7 @@
   const $ = id => document.getElementById(id);
 
   $("mgmt").innerHTML = MANAGEMENT.map(n => `<li>${esc(n)}</li>`).join("");
-  $("music").innerHTML = MUSIC.map(([n, href]) =>
+  $("musicList").innerHTML = MUSIC.map(([n, href]) =>
     `<li><a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join("");
   $("work").innerHTML = WORK.map((w, i) =>
     `<li><button type="button" class="poster" data-i="${i}"><figure>` +
@@ -248,12 +208,22 @@
   });
   lb.addEventListener("click", () => lb.close());
 
-  // ---- two pages: the main page, and iLoveMyPhone at #/ilovemyphone ----
+  // ---- tabs ----
+  const TABS = {
+    management: "Management",
+    music: "Music",
+    design: "Graphic Design",
+    ilovemyphone: "iLoveMyPhone",
+  };
   function route() {
-    const ilove = location.hash === "#/ilovemyphone";
-    $("home").hidden = ilove;
-    $("ilove").hidden = !ilove;
-    document.title = ilove ? "iLoveMyPhone — Jonah Bierman" : "Jonah Bierman";
+    const key = location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
+    const label = TABS[key];
+    $("home").hidden = !!label;
+    $("top").hidden = $("pages").hidden = !label;
+    document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== key));
+    document.querySelectorAll("header a").forEach(a =>
+      a.getAttribute("href") === "#/" + key ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    document.title = label ? `${label} — Jonah Bierman` : "Jonah Bierman";
     scrollTo(0, 0);
   }
   addEventListener("hashchange", route);
