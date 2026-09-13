@@ -68,9 +68,11 @@
   .side .who { order: 0; }
   .side .mail { order: 1; margin-top: -32px; }
   .side .tree { order: 2; }
-  .tree { list-style: none; display: flex; flex-direction: column; gap: clamp(13px, 1.5vw, 19px); }
+  .tree { --hgap: clamp(13px, 1.5vw, 19px); list-style: none; display: flex; flex-direction: column; gap: 0; margin: calc(var(--hgap) / -2) 0; }
   /* only the heading text itself (plus a few px) counts as a hover target */
-  .tree > li > a { display: inline-block; padding: 3px 4px; margin: -3px -4px; }
+  .tree > li > a { display: inline-block; padding: calc(var(--hgap) / 2) 4px; margin: 0 -4px; }
+  .tree > li > a:hover { background: none; }
+  .tree > li > a:hover .t { background: var(--pink); }
   .tree > li > a[aria-current="page"] { text-decoration: underline; text-underline-offset: 2px; }
 
   /* ---------- content ---------- */
@@ -151,7 +153,7 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: clamp(15px, 1.3vw, 19px);
+      font-size: clamp(13px, 1.05vw, 15px);
       pointer-events: none;
     }
   }
