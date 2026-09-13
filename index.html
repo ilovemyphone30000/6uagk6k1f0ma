@@ -258,7 +258,11 @@
 
 <script>
   // ---- content: edit here ----
-  const MANAGEMENT = ["Azel RM", "Piper Quincey Jackson", "TeenBoofMovie"];
+  const MANAGEMENT = [
+    ["Azel RM", "https://www.instagram.com/azelrm_/"],
+    ["Piper Quincey Jackson", "https://www.instagram.com/piperquinceyjackson/"],
+    ["TeenBoofMovie", "https://www.instagram.com/nicolohutch/"],
+  ];
 
   const NEW_VIRGINIA = [["Instagram", "https://www.instagram.com/new__virginia/"]];
 
@@ -282,7 +286,7 @@
   const $ = id => document.getElementById(id);
   const out = ([label, href]) => `<a class="ext" href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>`;
 
-  $("mgmt").innerHTML = MANAGEMENT.map(n => `<li>${esc(n)}</li>`).join("");
+  $("mgmt").innerHTML = MANAGEMENT.map(m => `<li>${out(m)}</li>`).join("");
   $("nvLinks").innerHTML = NEW_VIRGINIA.map(out).join("");
   $("iloveLinks").innerHTML = ILOVE.map(out).join("");
   $("work").innerHTML = WORK.map((w, i) =>
