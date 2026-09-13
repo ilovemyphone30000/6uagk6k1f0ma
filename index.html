@@ -83,6 +83,7 @@
   /* ---------- content ---------- */
   .tab { display: flex; flex-direction: column; gap: 28px; }
   .list { list-style: none; line-height: 1.1; }
+  #mgmt { display: flex; flex-direction: column; gap: 2.6em; }
   .row { display: flex; flex-wrap: wrap; gap: 8px 26px; }
   .work {
     display: grid;
@@ -132,12 +133,25 @@
     #top { display: none !important; }
     .bg { left: var(--side); }
     .work { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+    .phone-clock { display: none; }
+    #home {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: var(--side);
+      right: 0;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: clamp(13px, 1.05vw, 15px);
+      pointer-events: none;
+    }
   }
 
   /* ---------- phone: first page centred, each heading its own page ---------- */
   @media (max-width: 899px) {
     .side { min-height: 100vh; align-items: center; justify-content: center; text-align: center; padding: var(--pad); }
-    .kids { display: none !important; }
+    .kids, #home { display: none !important; }
     body.inside .side { display: none; }
     body:not(.inside) main, body:not(.inside) #top { display: none; }
     #top { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: var(--pad) var(--pad) 32px; }
@@ -159,7 +173,7 @@
   <aside class="side">
     <a class="who" href="#/">
       <span>Jonah Bierman</span>
-      <span class="clock" id="clock">00:00:00AM</span>
+      <span class="clock phone-clock">00:00:00AM</span>
     </a>
     <ul class="tree" id="tree"></ul>
     <a class="mail" href="mailto:jonah@paperweight.nyc">jonah@paperweight.nyc</a>
@@ -175,6 +189,11 @@
     </header>
 
     <main>
+      <!-- laptop only: the clock sits alone in the middle of the empty right side -->
+      <section class="tab" id="home" hidden>
+        <p class="clock">00:00:00AM</p>
+      </section>
+
       <section class="tab" id="management" hidden>
         <p class="caps u">Current</p>
         <ul class="list caps" id="mgmt"></ul>
@@ -272,7 +291,7 @@
   // ---- routing ----
   const LABELS = Object.fromEntries(TREE.map(([id, label]) => [id, label]));
   let current = "";
-  const showTab = key => document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== key));
+  const showTab = key => document.querySelectorAll(".tab").forEach(t => (t.hidden = t.id !== (key || "home")));
   function route() {
     const key = location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
     const label = LABELS[key];
@@ -313,12 +332,12 @@
   const fmt = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
   });
-  const clock = $("clock");
+  const clocks = document.querySelectorAll(".clock");
   let last = "";
   (function tick() {
     const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
     const s = `${p.hour}:${p.minute}:${p.second}${p.dayPeriod.toUpperCase()}`;
-    if (s !== last) clock.textContent = last = s;
+    if (s !== last) clocks.forEach(c => (c.textContent = s)), (last = s);
     requestAnimationFrame(tick);
   })();
 </script>
