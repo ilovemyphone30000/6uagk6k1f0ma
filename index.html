@@ -45,6 +45,7 @@
     z-index: 0;
     background: #fff url("img/ilove-hands.jpg") center / contain no-repeat;
     opacity: 0;
+    transition: opacity 1s ease-out;   /* fades away when it goes */
     pointer-events: none;
   }
   .me {
@@ -57,9 +58,9 @@
     transition: opacity 1.2s ease-out;
     pointer-events: none;
   }
-  body.show-hands .bg { opacity: 1; }
+  body.show-hands .bg { opacity: 1; transition-duration: 0s; }   /* appears at once */
   body.show-me .me { opacity: 1; transition-duration: 0.2s; }
-  @media (prefers-reduced-motion: reduce) { .me { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
 
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
   .side { display: flex; flex-direction: column; gap: 40px; font-size: var(--text); }
