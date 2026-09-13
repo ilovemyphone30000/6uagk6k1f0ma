@@ -200,8 +200,8 @@
       <a href="#/">Jonah Bierman</a>
       <a href="#/management">Management</a>
       <a href="#/new-virginia">New Virginia</a>
-      <a href="#/design">Graphic Design</a>
       <a href="#/ilovemyphone">iLoveMyPhone</a>
+      <a href="#/design">Graphic Design</a>
     </header>
 
     <main>
@@ -300,8 +300,8 @@
   const TREE = [
     ["management", "Management"],
     ["new-virginia", "New Virginia"],
-    ["design", "Graphic Design"],
     ["ilovemyphone", "iLoveMyPhone"],
+    ["design", "Graphic Design"],
   ];
   $("tree").innerHTML = TREE.map(([id, label]) =>
     `<li data-id="${id}"><a href="#/${id}"><span class="t">${esc(label)}</span></a></li>`).join("");
