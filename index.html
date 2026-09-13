@@ -13,8 +13,9 @@
     --paper: #fff;
     --pink: #ffd6fb;
     --rule: #cfcfcf;
-    --small: clamp(9px, 0.72vw, 11px);
-    --nav: clamp(11px, 0.9vw, 13px);
+    --text: clamp(13px, 1.05vw, 15px);
+    --small: var(--text);
+    --nav: var(--text);
     --pad: clamp(16px, 2.5vw, 36px);
     --side: clamp(220px, 22vw, 300px);
   }
@@ -61,8 +62,7 @@
   @media (prefers-reduced-motion: reduce) { .me { transition: none; } }
 
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
-  .side { display: flex; flex-direction: column; gap: 40px; font-size: clamp(13px, 1.05vw, 15px); }
-  .side .caps { font-size: clamp(10px, 0.8vw, 12px); }
+  .side { display: flex; flex-direction: column; gap: 40px; font-size: var(--text); }
   .who { display: flex; flex-direction: column; gap: 4px; font-weight: 700; text-transform: uppercase; }
   .clock { font-variant-numeric: tabular-nums; }
   .side .who { order: 0; }
@@ -96,7 +96,7 @@
   .work {
     display: grid;
     --g: clamp(10px, 1.4vw, 20px);
-    --cap: 28px;
+    --cap: 38px;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--g);
     /* 4 across, 2 rows: poster width is whatever lets two rows of 4:5 posters + captions fit the height */
@@ -154,7 +154,7 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: clamp(13px, 1.05vw, 15px);
+      font-size: var(--text);
       pointer-events: none;
     }
   }
@@ -173,7 +173,7 @@
     .tab { align-items: center; text-align: center; }
     .row { justify-content: center; }
     .work {
-      --cap: 34px;
+      --cap: 44px;
       grid-template-columns: repeat(3, 1fr);
       width: min(100cqw, calc(3 * (100cqh - 2 * var(--g) - 3 * var(--cap)) / 3.75 + 2 * var(--g)));
       text-align: left;
