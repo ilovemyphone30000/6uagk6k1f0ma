@@ -88,7 +88,7 @@
   }
   .nv-photos img { display: block; width: 100%; height: 100%; object-fit: cover; background: #111; }
   .nv-photos .tall { grid-row: 1 / 3; }
-  .bio { display: flex; flex-direction: column; gap: 1em; max-width: 42ch; line-height: 1.35; }
+  .bio { display: flex; flex-direction: column; gap: 1em; line-height: 1.35; }
   .work {
     display: grid;
     --g: clamp(10px, 1.4vw, 20px);
@@ -214,7 +214,7 @@
       <section class="tab" id="new-virginia" hidden>
         <div class="bio">
           <p>Band. NYC.</p>
-          <p>Isaac Viorst, Matthew Ashman, Jonah Bierman, Max Mendelsohn</p>
+          <p>Isaac&nbsp;Viorst, Matthew&nbsp;Ashman, Jonah&nbsp;Bierman, Max&nbsp;Mendelsohn</p>
         </div>
         <div class="row caps" id="nvLinks"></div>
         <div class="nv-photos">
@@ -229,6 +229,9 @@
       </section>
 
       <section class="tab" id="ilovemyphone" hidden>
+        <div class="bio">
+          <p>Parties, Playlists, Blog. With Nicolo&nbsp;Hutchinson.</p>
+        </div>
         <div class="row caps" id="iloveLinks"></div>
       </section>
 
@@ -261,13 +264,13 @@
   ];
 
   const WORK = [
+    { src: "work/avenues-for-justice.jpg", title: "Avenues for Justice Benefit" },
     { src: "work/mavi.jpg", title: "Mavi — NYU Program Board" },
     { src: "work/sydney-sherrill-europe.jpg", title: "Sydney Sherrill — Europe Tour" },
     { src: "work/true-jackson-sxsw.jpg", title: "True Jackson — SXSW" },
     { src: "work/relics-clay-st.jpg", title: "Relics + Clay St — Nightclub 101" },
     { src: "work/relics-world-tour.jpg", title: "Relics — World Tour 2026" },
     { src: "work/new-virginia-house-show.jpg", title: "New Virginia — House Show" },
-    { src: "work/avenues-for-justice.jpg", title: "Avenues for Justice Benefit" },
   ];
 
   // ---- render ----
