@@ -173,8 +173,10 @@
     main { flex: 1; min-height: 0; padding: 0 var(--pad) var(--pad); }
     .tab { align-items: center; text-align: center; }
     .row { justify-content: center; }
+    .poster figcaption { display: none; }   /* too small to read on a phone; the title shows when a poster is opened */
+    .poster img { margin-bottom: 0; }
     .work {
-      --cap: 16px;
+      --cap: 0px;
       grid-template-columns: repeat(3, 1fr);
       width: min(100cqw, calc(3 * (100cqh - 2 * var(--g) - 3 * var(--cap)) / 3.75 + 2 * var(--g)));
       text-align: left;
