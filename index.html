@@ -16,6 +16,7 @@
     --small: clamp(9px, 0.72vw, 11px);
     --nav: clamp(11px, 0.9vw, 13px);
     --pad: clamp(16px, 2.5vw, 36px);
+    --side: clamp(220px, 22vw, 300px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   [hidden] { display: none !important; }
@@ -42,7 +43,7 @@
     position: fixed;
     inset: 0;
     z-index: 0;
-    background: #fff url("img/ilove-hands.jpg") center / cover no-repeat;
+    background: #fff url("img/ilove-hands.jpg") center / contain no-repeat;
     opacity: 0;
     transition: opacity 0.25s;
     pointer-events: none;
@@ -58,7 +59,7 @@
     pointer-events: none;
   }
   body.show-hands .bg { opacity: 1; }
-  body.show-me .me { opacity: 0.35; }
+  body.show-me .me { opacity: 1; }
   @media (prefers-reduced-motion: reduce) { .bg, .me { transition: none; } }
 
   /* ---------- the tree: name, clock, headings (current one opens), email ---------- */
@@ -115,7 +116,7 @@
   @media (min-width: 900px) {
     .shell {
       display: grid;
-      grid-template-columns: clamp(220px, 22vw, 300px) 1fr;
+      grid-template-columns: var(--side) 1fr;
       min-height: 100vh;
     }
     .side {
@@ -129,6 +130,7 @@
     .side .mail { margin-top: auto; }
     main { padding: calc(var(--pad) + 8px) var(--pad) clamp(60px, 8vw, 120px); }
     #top { display: none !important; }
+    .bg { left: var(--side); }
     .work { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
   }
 
