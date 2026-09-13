@@ -343,6 +343,7 @@
     document.querySelectorAll("#top a").forEach(a =>
       a.getAttribute("href") === "#/" + key ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
     document.title = label ? `${label} — Jonah Bierman` : "Jonah Bierman";
+    if (key !== "ilovemyphone") hideHandsNow();
     if (matchMedia("(max-width: 899px)").matches) scrollTo(0, 0);
   }
   addEventListener("hashchange", route);
@@ -368,6 +369,7 @@
     if (!a) return;
     const id = a.parentElement.dataset.id;
     showTab(id);
+    if (id !== "ilovemyphone") hideHandsNow();
   });
   $("tree").addEventListener("mouseout", e => {
     const a = e.target.closest("#tree > li > a");
@@ -375,6 +377,15 @@
     showTab(current);
   });
   // hands: strictly while the pointer is on the iLoveMyPhone letters themselves, no padding, no fade
+  // hands vanish immediately (no fade) when another page is opened or hovered
+  function hideHandsNow() {
+    const bg = document.querySelector(".bg");
+    if (!document.body.classList.contains("show-hands")) return;
+    bg.style.transition = "none";
+    document.body.classList.remove("show-hands");
+    void bg.offsetWidth;          // apply the removal before the fade comes back
+    bg.style.transition = "";
+  }
   const iloveText = document.querySelector('#tree > li[data-id="ilovemyphone"] .t');
   const hands = document.body.classList;
   function placeHands() {
