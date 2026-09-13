@@ -138,7 +138,8 @@
       padding: calc(var(--pad) + 8px) var(--pad);
       border-right: 1px solid var(--rule);
     }
-    main { height: 100vh; padding: calc(var(--pad) + 8px) var(--pad); }
+    /* content starts level with the first heading on the left (measured in JS as --content-top) */
+    main { height: 100vh; padding: var(--content-top, calc(var(--pad) + 8px)) var(--pad) calc(var(--pad) + 8px); }
     #top { display: none !important; }
     .bg { left: var(--side); }
     .phone-clock { display: none; }
@@ -336,6 +337,17 @@
   }
   addEventListener("hashchange", route);
   route();
+
+  // line the right panel's content up with the top of the first heading in the left column
+  function alignTop() {
+    const first = document.querySelector("#tree > li > a");
+    if (!first) return;
+    const top = first.getBoundingClientRect().top + parseFloat(getComputedStyle(first).paddingTop);
+    document.documentElement.style.setProperty("--content-top", Math.round(top) + "px");
+  }
+  alignTop();
+  addEventListener("resize", alignTop);
+  document.fonts && document.fonts.ready.then(alignTop);
 
   // ---- laptop hover: a heading shows its page only while the pointer is on its text ----
   // (iLoveMyPhone also brings up the hands); moving off goes back to the clicked page
