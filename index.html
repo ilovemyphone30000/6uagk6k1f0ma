@@ -36,7 +36,7 @@
   .caps { text-transform: uppercase; font-size: var(--small); }
   .u { text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ---------- hover pictures: hands behind the right panel for iLove, polaroid while the mouse moves on the home page ---------- */
+  /* ---------- hover pictures: hands behind the right panel for iLove, polaroid on the name and while the mouse moves on the home page ---------- */
   .shell { position: relative; z-index: 1; }
   .bg {
     position: fixed;
@@ -349,13 +349,20 @@
     showTab(current);
     document.body.classList.remove("show-hands");
   });
-  // ---- home page: the polaroid is up while the mouse is moving, gone once it stops ----
-  let stillTimer;
+  // ---- polaroid: up while hovering the name (not on Graphic Design or New Virginia),
+  //      and on the home page also while the mouse is moving, gone once it stops ----
+  const me = document.body.classList;
+  let onName = false, stillTimer;
+  const nameAllowed = () => canHover.matches && !["design", "new-virginia"].includes(current);
+  const who = document.querySelector(".who");
+  who.addEventListener("mouseenter", () => { onName = true; if (nameAllowed()) me.add("show-me"); });
+  who.addEventListener("mouseleave", () => { onName = false; me.remove("show-me"); });
   document.addEventListener("mousemove", () => {
+    if (onName) return;
     const onHome = canHover.matches && !current && !$("home").hidden;
-    document.body.classList.toggle("show-me", onHome);
+    me.toggle("show-me", onHome);
     clearTimeout(stillTimer);
-    if (onHome) stillTimer = setTimeout(() => document.body.classList.remove("show-me"), 250);
+    if (onHome) stillTimer = setTimeout(() => onName || me.remove("show-me"), 250);
   });
 
   // ---- live clock, New York time: HH:MM:SSPM ----
