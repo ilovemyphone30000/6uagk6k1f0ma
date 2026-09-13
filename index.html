@@ -97,7 +97,7 @@
   .work {
     display: grid;
     --g: clamp(10px, 1.4vw, 20px);
-    --cap: 20px;
+    --cap: 0px;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--g);
     /* 4 across, 2 rows: poster width is whatever lets two rows of 4:5 posters + captions fit the height */
@@ -105,8 +105,8 @@
     list-style: none;
   }
   .poster { display: block; width: 100%; container-type: inline-size; }
-  .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; margin-bottom: 6px; }
-  .poster figcaption { display: inline-block; white-space: nowrap; line-height: 1.2; font-size: min(10px, 4.4cqi); letter-spacing: 0.01em; }
+  .poster img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #f2f2f2; }
+  .poster figcaption { display: none; }   /* no captions on the grid; the title shows when a poster is opened */
   .press { width: min(420px, 100%); }
   .press blockquote { font-size: var(--nav); line-height: 1.3; margin: 0 0 8px; text-transform: none; }
   .press cite { font-style: normal; }
@@ -173,10 +173,7 @@
     main { flex: 1; min-height: 0; padding: 0 var(--pad) var(--pad); }
     .tab { align-items: center; text-align: center; }
     .row { justify-content: center; }
-    .poster figcaption { display: none; }   /* too small to read on a phone; the title shows when a poster is opened */
-    .poster img { margin-bottom: 0; }
     .work {
-      --cap: 0px;
       grid-template-columns: repeat(3, 1fr);
       width: min(100cqw, calc(3 * (100cqh - 2 * var(--g) - 3 * var(--cap)) / 3.75 + 2 * var(--g)));
       text-align: left;
